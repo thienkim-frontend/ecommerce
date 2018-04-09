@@ -1,0 +1,21 @@
+mixin packageItem(imgUrl, package, input, txt)
+    // Start package-item
+    .col-4
+        .productLink
+        img(src="https://www.aktiv.se/wp-content/uploads/" + imgUrl, alt=txt, title=input)
+        label
+        input(type="radio", name="price_package", class="input-custom", data-price-package=package, value=input)
+        h4!= txt
+    // End package-item
++packageItem("2014/03/produkt-exelpaketet.jpg", "webprice_grund", "Använd Excel Effektivt: Excel, Excel Avancerad: Kalkylmodeller, Excel Avancerad: Databaser", "Använd Excel Effektivt <br>Paket med 3 utbildningar")
++packageItem("2014/03/produkt-exel.jpg", "webprice_unit", "Excel Grund/Fortsättning", "Excel Grund & Forts")
++packageItem("2014/03/produkt-exel-kalkyl.jpg", "webprice_unit", "Excel Avancerad: Kalkylmodeller", "Excel Avancerad: Kalkylmodeller")
++packageItem("2014/03/produkt-exel-databas.jpg", "webprice_unit", "Excel Avancerad: Databaser", "Excel Avancerad: Databaser")
++packageItem("2014/03/produkt-wordpaket.jpg", "webprice_expert", "Använd Word Effektivt: Word, Word Avancerad, Word Expert", "Använd Word Effektivt <br>Paket med 3 utbildningar")
++packageItem("2014/03/produkt-word-grund.jpg", "webprice_unit", "Word Grund/Fortsättning", "Word Grund & Forts")
++packageItem("2014/03/produkt-word-avancerat.jpg", "webprice_unit", "Word Avancerad", "Word Avancerad")
++packageItem("2014/03/produkt-word-expert.jpg", "webprice_unit", "Word Expert", "Word Expert")
++packageItem("2014/03/Hela-paketet-1.jpg", "webprice_grund_expert", "Använd Officepaketet Effektivt: Excel, Word, PowerPoint, Outlook, Windows, Excel Avanc. Kalkylmodeller, Excel Avanc. Databaser, Word Avancerad, Word Expert", "Använd Officepaketet Effektivt <br>Hela paketet med alla 9 utbildningar")
++packageItem("2014/03/produkt-outlook-1.jpg", "webprice_unit", "Outlook Grund/Fortsättning", "Outlook Grund & Forts")
++packageItem("2014/03/produkt-powerpoint.jpg", "webprice_unit", "PowerPoint Grund/Fortsättning", "PowerPoint Grund & Forts")
++packageItem("2014/03/produkt-windows.jpg", "webprice_unit", "Windows 10 Grund/Fortsättning", "Windows 10 Grund & Forts")

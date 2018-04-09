@@ -1,0 +1,122 @@
+@function calc-em($target-px) {
+  @return ($target-px / $base-fontsize) * 1em;
+}
+
+@mixin calc($prop, $val) {
+    @each $pre in -webkit-, -moz-, -o-, "" {
+        #{$prop}: $pre + calc(#{$val});
+    } 
+}
+// @include calc( width, '100% - 2px');
+
+@mixin vendor-prefix($name, $value...) {
+  @each $prefix in -webkit-, -moz-, -o-, "" {
+    #{$prefix}#{$name}: $value;
+  }
+}
+// @include vendor-prefix(hyphens, auto);
+
+
+@mixin center($horizontal: true, $vertical: true) {
+  position: absolute;
+  @if ($horizontal and $vertical) {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  } @else if ($horizontal) {
+    left: 50%;
+    transform: translate(-50%, 0);
+  } @else if ($vertical) {
+    top: 50%;
+    transform: translate(0, -50%);
+  }
+}
+
+// @include fluid-fontsize(1, 1.5);
+@mixin fluid-fontsize($percentFontsize, $percentLineheight: $percentFontsize * 1.2){
+  font-size: $base-fontsize * $percentFontsize;
+  line-height: $base-fontsize * $percentLineheight;
+  @include media(md){
+    font-size: $base-fontsize-lg * $percentFontsize;
+    line-height: $base-fontsize-lg * $percentLineheight;
+  }
+}
+@mixin fluid-fontsize-v2($default, $lg: $default){
+  font-size: $base-fontsize * nth($default, 1);
+  line-height: $base-fontsize * nth($default, 2);
+  @include media(md){
+    font-size: $base-fontsize-lg * nth($lg, 1);
+    line-height: $base-fontsize-lg * nth($lg, 2);
+  }
+}
+
+
+// Usage: @include add-styles(( margin-reset, padding-reset, size-reset ));
+@mixin add-styles($items) {
+  @each $item in $items {
+    @extend %#{$item};
+  }
+}
+
+
+
+
+// @include media(md){ padding: 30px 0 60px; };
+ @mixin media($point) {
+   @if $point == lg {
+     @media (min-width: 1200px) { @content ; }
+  }
+    @else if $point == md {
+     @media (min-width: 992px) { @content ; }
+  }
+   @else if $point == sm {
+     @media (min-width: 768px)  { @content ; }
+  }
+  @else if $point == xs {
+     @media (min-width: 576px)  { @content ; }
+
+  }
+}
+ @mixin media-only($point) {
+   @if $point == lg {
+     @media (min-width: 992px) and (max-width: 1199.99px) { @content ; }
+  }
+    @else if $point == md {
+     @media (min-width: 768px) and (max-width: 991.99px) { @content ; }
+  }
+   @else if $point == sm {
+     @media (min-width: 576px) and (max-width: 767.99px)  { @content ; }
+  }
+  @else if $point == xs {
+     @media (max-width: 575.99px)  { @content ; }
+
+  }
+}
+@mixin media-destop-first($point) {
+   @if $point == lg {
+     @media (max-width: 1199.99px) { @content ; }
+  }
+    @else if $point == md {
+     @media (max-width: 991.99px) { @content ; }
+  }
+   @else if $point == sm {
+     @media (max-width: 767.99px) { @content ; }
+  }
+  @else if $point == xs {
+     @media (max-width: 575.99px) { @content ; }
+
+  }
+}
+@mixin media-retina{
+  @media
+  only screen and (-webkit-min-device-pixel-ratio: 2)      and (max-width: 991px),
+  only screen and (   min--moz-device-pixel-ratio: 2)      and (max-width: 991px),
+  only screen and (     -o-min-device-pixel-ratio: 2/1)    and (max-width: 991px),
+  only screen and (        min-device-pixel-ratio: 2)      and (max-width: 991px),
+  only screen and (                min-resolution: 192dpi) and (max-width: 991px),
+  only screen and (                min-resolution: 2dppx)  and (max-width: 991px) {
+    @content ;
+  }
+}
+
+

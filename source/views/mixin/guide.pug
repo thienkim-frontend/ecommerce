@@ -1,0 +1,239 @@
+doctype html
+// https://pugjs.org/language/plain-text.html
+//- http://codepen.io
+//- Pug is an engine preprocessor, primarily used for server-side templating in NodeJS. Pug give you a powerful new way to write markup with a number of advantages over plain HTML, faster and flexible.
+//- The extends keyword allows a template to extend a layout or parent template. It can then override certain pre-defined blocks of content.
+  
+  Jade supports template inheritance via the block and extends keywords. 
+  A block is simply a "block" of Jade that may be replaced within a child template.
+
+//- Unbuffered code (starts with -): javascript code
+  - Buffered code (starts with  =): output the result of evaluating the JavaScript expression in the template
+  - Unescaped Buffered Code (starts with  !=): to output HTML tags within a tag
+
+//- Self Closing Tags
+br/
+//-nested tags
+a: img(src='', title='', style={color:'red', background:'green'})
+
+//- &attributes syntax can be used to explode an object into attributes of an element.
+div#foo(data-bar="foo")&attributes({'data-foo': 'bar'})
+//- <div id="foo" data-bar="foo" data-foo="bar"></div>  
+
+- var currentUrl = '/'
+a(class={active: currentUrl === '/'} href='/') Home
+
+- var classes =[btn, btn-primary]
+a.underlined(class=classes)
+
+//- Plain Text
+//-large blocks of text: add "." after the tag (with no preceding space)
+p.
+  If you take a look at this page's source #[a(target="_blank", href="https://github.com/jadejs/jade/blob/master/docs/views/reference/interpolation.jade") on GitHub], you'll see several places where the tag interpolation operator is used, like so.
+p
+  |Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero, numquam.
+  br
+  |Quo, beatae, facere. Tempore laudantium quia animi qui, temporibus tenetur, magni consequatur, dolorem in numquam eos dolor vel eum adipisci reprehenderit corporis architecto laboriosam eaque ad veritatis atque! Ducimus voluptates esse libero iure, modi hic deleniti, assumenda!
+
+//- Loops for arrays and objects
+ul
+  //- option 1
+  - var list = ["Uno", "Dos", "Tres", "Cuatro", "Cinco", "Seis"]
+  each val, index in list.length ? list : ['There are no values']
+    li= index + ':' + val.toUpperCase()
+  
+  //- option 2: You can also use for as an alias of each
+  //- else block that will be executed if the array or object does not contain values to be iterated over
+  for val in list
+    li= val
+  else
+    li There are no values
+
+  - var n=0
+  while n<4
+    li= n++
+
+  - for( x = 0; x < list.length; x++){
+    li= list[x]
+  - }
+
+//- Conditionals
+- var friends = 5
+case friends
+  when 0: p you have no friends
+  when 1: p you have a friend
+  default: p you have #{friends} friends
+
+- var obj = {name:'Jhon', age:'24', status:'single'}
+if obj.name
+  p= obj.name
+else if obj.age == 24
+  p #{obj.age} years old.
+else
+  p User has no description
+
+//- if !obj.des
+unless obj.des 
+  p User has no description
+
+//- Mixins are like functions. They take parameters as input and give markup as output. Minxins allow you to create reusable blocks.   
+mixin article(title)
+  .article
+    h1= title
+    if block
+      block
+    else
+      p No content provided
++article ('Hello world')        
+  p This is my content
+
+
+mixin list(id, ...items)
+  ul(id=id)
+    each item in items
+      li&attributes(attributes)= item
++list('my-list',1,2,3,4)(class="btn")
+
+//- Includes allow you to insert the contents of one jade, css, js file into another.
+include ./footer.jade
+
+
+extend layout-demo
+prepend head
+  script(src='/one.js')
+
+append head
+  script(src='/two.js')
+
+block content
+  p Inherited Content
+
+//- new content
+a(class='button' href='google.com') Google
+a(class='button', href='google.com') Google
+
+div(class='div-class' '(click)'='play()')
+div(class='div-class', (click)='play()')
+
+- var authenticated = true
+body(class=authenticated ? 'authed' : 'anon')
+
+input(
+  type='checkbox'
+  name='agreement'
+  checked
+)
+
+//- Since literal HTML tags do not get processed, they do not self-close, unlike Pug tags
+<p data-content="<img src='../images/01.jpg'">Pure HTML</p>
+
+//- Tag Interpolation
+p
+  | If I don't write the paragraph with tag interpolation, tags like
+  strong strong
+  | and
+  em em
+  | might produce unexpected results.
+//- Block in a Tag - add '.' right after the tag name, or after the closing parenthesis, if the tag has attributes
+p.
+  If I do, whitespace is #[strong respected] and #[em everybody] is happy.
+
+- var url = 'pug-test.html';
+a(href='/' + url) Link
+a(href=`/${url}`) ES6
+//- don't support a(href="/#{url}") Link
+
+div(data-html!="<code>")
+
+a(style={color: 'red', background: 'green'})
+
+- var classes = ['foo', 'bar', 'baz']
+//- the class attribute may also be repeated to merge arrays
+a.bang(class=classes class=['bing'])
+
+- var currentUrl = '/about';
+a(class={active: currentUrl === '/'} href='/') Home
+|
+|
+a(class={active: currentUrl === '/about'} href='/about') About
+
+div#foo(data-bar="foo")&attributes({'data-foo': 'bar'})
+
+- var friends = 1
+case friends
+  when 0
+    - break
+  when 1
+  when 2
+    p you have very few friends
+  default: p you have #{friends} friends
+
+-
+  var list = [
+    "Uno", 
+    "Dos", 
+    "Tres"]
+each item in list.length ? list : ['There are no values']
+  li= item
+
+- var values = [];
+ul
+  each val in values
+    li= val
+  else
+    li There are no values
+
+ul
+  each val, index in {1:'one',2:'two',3:'three'}
+    li= index + ': ' + val
+
+//- For security, buffered code is first HTML escaped
+p= 'This code is' + ' <escaped>!'
+p!= 'This code is <strong>not</strong> escaped!'
+p This code is <strong>not</strong> escaped!
+
+// just some paragraphs
+<!--[if IE 8]>
+<html lang="en" class="lt-ie9">
+<![endif]-->
+
+- var user = { description: 'foo bar baz' }
+- var authorised = false
+#user
+  if user.description
+    p.description= user.description
+  else if authorised
+    p.description.
+      User has no description, 
+      why not add one...
+  else
+    p.description User has no description
+
+  unless authorised
+    p.description.
+      User has no description, 
+      why not add one...
+
+- var n = 0;
+ul
+  while n < 4
+    li= n++
+
+//- an unknown number of arguments using the “rest arguments” syntax
+mixin article(title, ...items)
+  //- The values in attributes by default are already escaped! You should use != to avoid escaping them a second time
+  .article(class!=attributes.class)
+    .article-wrapper&attributes(attributes)
+      h1= title
+      ul
+        each item in items
+          li= item
+      if block
+        block
+      else
+        p No content provided
+
++article('Hello world', "Uno", "Dos", "Tres")(class="style1")
++article('Hello world')
+  p This is my
+  p Amazing article

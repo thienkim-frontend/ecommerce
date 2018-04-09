@@ -1,0 +1,238 @@
+@import "_mixin";
+html { font-size: 62.5%; } /* =10px */
+body{
+  position: relative;
+  font-family: $body-font;
+  @include fluid-fontsize(1, 1.5);
+  color: $base-color;
+  -webkit-font-smoothing:antialiased;
+}
+
+/*-----------------------------------------
+ HEADING
+------------------------------------------*/
+/* Set for all headings */
+#{headings()} {
+	 font-family: $title-font;
+}
+// set size for headers
+@each $header, $size in (h1: 30px, h2: 20px, h3: 18px, h4: 15px, h5: 12px) {
+  #{$header} {
+    font-size: ($size / 10px) * 1rem;
+  }
+}
+
+a{
+  color: $dark-grey;
+  text-decoration: none;
+  @include transition;
+  &:hover{
+      color: $highlight-color;
+  }
+  &:hover, &:active, &:visited, &:focus{
+    text-decoration: none;
+  }
+}
+
+blockquote{
+  position:relative;
+  padding: 10px 20px;
+  margin-bottom: 10px;
+  color: $dark-grey;
+  border-left: 5px solid $highlight-color;
+  p{
+    font-size: 16px;
+  }
+  cite{
+    font-style: italic;
+    &:before{
+      content: '\2014 \00A0';
+    }
+  }
+  &:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    margin-top: -8px;
+  }
+}
+
+strong{ font-weight: 700!important; }
+.light-bg{ 
+  background-color: $grey-v2!important; 
+  .title-wrapper .has-logo-icon{
+    &:before{
+      background: $grey-v2;
+    }
+  }
+}
+
+.title-wrapper{
+  font-family: $title-font;
+  margin-bottom: 30px;
+  [class*="section"] > &{ margin-bottom: 60px; }
+  strong{ font-weight: 900!important; }
+  img, span{ 
+    display: inline-block; 
+    vertical-align: middle; 
+  }
+  .organic{ 
+    position: relative; top: -15px;
+  }
+  .main-title{
+    @include fluid-fontsize(2.5, 3);
+    font-weight: 300;
+  }
+  .sub-title{
+    font-size: 11px;
+    line-height: 14px;
+    letter-spacing: 2px;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: $grey;
+    &.pos-top{ margin-bottom: 15px; }
+  }
+  @extend %title-wrapper-style2;
+  @extend %has-logo-icon;
+  @extend %has-lines-through;
+  @include media-only(xs){
+    .organic{ width: 100px; top: -11px;}
+  }
+}
+
+.main-wrapper{position: relative; overflow: auto}
+%title-wrapper-style2{
+  &.style2{
+    .main-title{
+      position: relative;
+      > span{
+        display: inline-block;
+        border-radius: 60px;
+        border: 1px solid $grey-v2;
+        padding: 0 30px;
+        background-color: $white;
+      }
+      &:after{
+        content: "";
+        position: absolute; top: 50%; left: 0; z-index: -1;
+        width: 100%; height: 1px;
+        background-color: $grey-v2;
+      }
+    }
+    .sub-title{ margin-bottom: 15px!important; }
+    @include media-only(xs){
+      margin-right: -15px;
+      margin-left: -15px;
+      .main-title > span{ padding: 0 10px; }
+    }
+  }
+}
+%has-lines-through{
+  .has-lines-through{
+    display: inline-block;
+    padding: 0 10px;
+    position: relative;
+    &:before, &:after {
+        content: "";
+        display: block;
+        width: 40px; height: 1px;
+        position: absolute; top: 50%;
+        background: #ddd;
+    }
+    &:before { right: 100%; }
+    &:after { left: 100%; }
+  }
+}
+%has-logo-icon{
+  .has-logo-icon{
+    position: relative;
+    &:before{
+      content: "";
+      position: absolute; left: 0; top: 0; 
+      width: 16px; height: 16px;
+      background: $white;
+    }
+    &:after{
+      content: "";
+      position: absolute; left: -3px; top: -12px; 
+      width: 16px; height: 26px;
+      background: url(#{$image}/svg/icon-logo.svg) no-repeat;
+      background-size: cover;
+    }
+  }
+}
+
+.btn-outline, .filter-dropdown{
+  display: inline-block;
+  padding: 0 15px; margin: 0 5px;
+  height: 35px; line-height: 35px;
+  font-size: $sm-fontsize; 
+  text-align: center;
+  color: $light-grey;
+  background-color: $white;
+  border: 1px solid $light-grey;
+  @include border-radius(30px);
+  &.is-active, &:hover{
+    position: relative;
+    color: $white;
+    border-color: $highlight-color;
+    background-color: $highlight-color;
+    @include box-shadow (0px 6px 60px 2px rgba(68, 68, 68, 0.3));
+  }
+}
+
+input:disabled, option:disabled, select.disabled{
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAIklEQVQIW2NkQAKrVq36zwjjgzhhYWGMYAEYB8RmROaABADeOQ8CXl/xfgAAAABJRU5ErkJggg==) repeat!important;
+  @include opacity(.4);
+  + label{
+    color: $grey;
+  }
+}
+
+select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"]{
+    width: 100%;
+    outline: none;
+    padding: 6px 7px;
+    background-color: $white;
+    border: 1px solid $grey;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+    border-radius: 4px;
+    transition: border linear .2s, box-shadow linear .2s;
+}
+
+input{
+  height: 30px;
+  // remove focus highlighting
+  &:focus{
+      outline-color: transparent!important;
+      outline-style: none!important;
+  }
+}
+
+::-webkit-input-placeholder{ color: $grey; }
+::-moz-placeholder{ color: $grey; }
+:-ms-input-placeholder{ color: $grey; }
+
+input[type="button"], input[type="reset"], input[type="submit"], .btn-submit, .btn-cta{
+  display: inline-block;
+  padding: 4px 15px 5px;
+  text-transform: uppercase;
+  color: $white;
+  background: $highlight-color;
+  border: none;
+  height: 30px;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,.15), 0 1px 2px rgba(0,0,0,.05);
+  &:hover{
+  }
+}
+
+input[type=checkbox], input[type=radio]{}
+
+// Used to style the TinyMCE editor - wordpress
+.wp-editor{}
+
+
+

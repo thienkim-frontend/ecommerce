@@ -1,0 +1,122 @@
+.home_slider_wrapper{
+    margin-bottom: 15px;
+   .bx-pager{ 
+       bottom: 30px; 
+       &.bx-default-pager a{
+            width: 15px;
+            height: 15px;
+            background-color: #ffffff;
+            -moz-border-radius: 5px;
+            -webkit-border-radius: 5px;
+            border-radius: 15px;
+            &:hover, &.active{
+                background-color: #403e3f;
+            }
+        }
+    }
+}
+.home_slider{
+    li{ position: relative; }
+    .caption-slider{
+        visibility:hidden;
+        width: 450px;
+        position: absolute;
+        left: 60px;
+        top: 60px;
+        bottom: 90px;
+        padding: 30px;
+        color: #ffffff;
+        background-color: #09f;
+        &.active-slide { visibility: visible; }
+        h2{
+            font-size: 42px;
+            margin-bottom: 25px;
+        }
+        p{
+            font-size: 24px;
+            font-weight: bold;
+            line-height: 1.25em;
+        }
+    }
+}
+
+
+@media (max-width: 768px){
+    .home_slider .caption-slider{
+        width: 100%;
+        left: 0;
+        bottom: 0;
+        top: auto;
+        opacity: .8;
+        padding: 15px 15px 30px;;
+    }
+}
+.animated {
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+@keyframes bounceInLeft {
+    from, 60%, 75%, 90%, to {
+    animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+    }
+
+    0% {
+    opacity: 0;
+    transform: translate3d(-3000px, 0, 0);
+    }
+
+    60% {
+    opacity: 1;
+    transform: translate3d(25px, 0, 0);
+    }
+
+    75% {
+    transform: translate3d(-10px, 0, 0);
+    }
+
+    90% {
+    transform: translate3d(5px, 0, 0);
+    }
+
+    to {
+    transform: none;
+    }
+}
+
+.bounceInLeft {
+    animation-name: bounceInLeft;
+}
+
+@keyframes bounceInRight {
+    from, 60%, 75%, 90%, to {
+    animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+    }
+
+    from {
+    opacity: 0;
+    transform: translate3d(3000px, 0, 0);
+    }
+
+    60% {
+    opacity: 1;
+    transform: translate3d(-25px, 0, 0);
+    }
+
+    75% {
+    transform: translate3d(10px, 0, 0);
+    }
+
+    90% {
+    transform: translate3d(-5px, 0, 0);
+    }
+
+    to {
+    transform: none;
+    }
+}
+
+.bounceInRight {
+    animation-name: bounceInRight;
+}

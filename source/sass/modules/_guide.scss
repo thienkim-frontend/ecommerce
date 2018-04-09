@@ -1,0 +1,235 @@
+/* 
+@include font-face();
+@include box-shadow();
+@include box-sizing();
+@include transition(); 
+@include transform();
+@include transform-origin();
+@include transform3d();
+@include perspective();
+@include backface-visibility();
+@include display-flex(inline-flex); 		 flex (default), inline-flex
+@include align-items(center);				 flex-start | flex-end | center | baseline | stretch
+@include justify-content(center);			 flex-start | flex-end | center | space-between | space-around
+@include align-content();					 flex-start | flex-end | center | space-between | space-around | stretch
+@include text-shadow();
+@include opacity();
+@include background(image-url("foo.png"),
+  linear-gradient(to bottom right, #333, #0c0),
+  radial-gradient(#c00, #fff 100px));
+
+http://12devs.co.uk/articles/handy-advanced-sass/
+*/
+
+h3{
+  .parent-selector &{
+    margin-bottom: 20px;
+  }
+}
+
+// Placeholder Selectors
+%button {
+  min-width: 100px;
+  padding: 1em;
+  border-radius: 1em;
+}
+%twitter-background {
+  color: #fff;
+  background: #55acee;
+}
+%facebook-background {
+  color: #fff;
+  background: #3b5998;
+}
+
+.btn {
+  &-twitter {
+    @extend %button;
+    @extend %twitter-background;
+  }
+  &-facebook {
+    @extend %button;
+    @extend %facebook-background;
+  }
+}
+
+// unknown number of arguments
+@mixin colors($text, $background, $border) {
+  color: $text;
+  background-color: $background;
+  border-color: $border;
+}
+$value-map: (text: #00ff00, background: #0000ff, border: #ff0000);
+.secondary {
+  @include colors($value-map...);
+} 
+
+@mixin transform($transforms...) {
+	   -moz-transform: $transforms;
+	     -o-transform: $transforms;
+	    -ms-transform: $transforms;
+	-webkit-transform: $transforms;
+          transform: $transforms;
+
+@mixin centerer($horizontal: true, $vertical: true) {
+  position: absolute;
+  @if ($horizontal and $vertical) {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  } @else if ($horizontal) {
+    left: 50%;
+    transform: translate(-50%, 0);
+  } @else if ($vertical) {
+    top: 50%;
+    transform: translate(0, -50%);
+  }
+}
+
+// added in  Sass 3.1.0
+@function set-textColor($color) {
+  @if (lightness($color) > 50) {
+    @return #000000; // Lighter backgorund, return dark color
+  } @else {
+    @return #ffffff; // Darker background, return light color
+  }
+}
+
+@function calc-em($target-px, $context) {
+  @return ($target-px / $context) * 1em;
+}
+
+// from ... through : include the last index
+// from ... to: except the last index
+$columns: 4;
+@for $i from 1 through $columns {
+  .cols-#{$i} {
+    width: ((100 / $columns) * $i) * 1%;
+  }
+}
+
+@while $columns > 0 {
+  .cols-#{$columns} {
+    width: 10px * $columns;
+  }
+  $columns: $columns - 1;
+}
+
+@for $i from 1 to $columns {
+  .cols-#{$i} {
+    width: ((100 / $columns) * $i) * 1%;
+  }
+}
+
+// @each
+$icons: success error warning;
+@each $icon in $icons {
+  .icon-#{$icon} {
+    background-image: url(/images/icons/#{$icon}.png);
+  }
+}
+
+// @content
+@mixin apply-to-ie7 {
+  *:first-child+html & {
+    @content;
+  }
+}
+.btn {
+  display: inline-block;
+  @include apply-to-ie7 {
+    overflow: visible;
+    display: inline;
+    zoom: 1;
+  }
+}
+
+// @extend with class
+.inline-block {
+  display: inline-block; 
+  vertical-align: baseline; 
+  *display: inline; 
+  *vertical-align: auto;
+  *zoom: 1;
+}
+.btn {
+  @extend .inline-block;
+  padding: 0.5em 1em;
+}
+// @extend with selector
+a:hover{
+  text-decoration: underline;
+}
+.hoverlink{
+  @extend a:hover;
+}
+
+// custom grid with 12 columns
+%grid {
+  margin-left: -2em;
+  overflow: hidden;
+  %column {
+    float: left;
+    padding-left: 2em;
+    min-height: 1px;
+    box-sizing: border-box;
+  }
+  @for $i from 1 through 12 {
+    %columns-#{$i} {
+      width: ((100 / 12) * $i) * 1%;
+    }
+  }
+}
+.my-grid {
+  @extend %grid;
+
+  [class^="cols-"], [class*=" cols-"] {
+    @extend %column;
+  }
+
+  @for $i from 1 through 12 {
+    .cols-#{$i} {
+      @extend %columns-#{$i};
+    }
+  }
+}
+
+// set size for headers
+@each $header, $size in (h1: 2em, h2: 1.5em, h3: 1.2em) {
+  #{$header} {
+    font-size: $size;
+  }
+}
+
+// API Functions: if, length, nth(arr, index), index(arr, item)
+$colours: red green blue;
+.foo {
+  width: if($bar, 100%, 50%);
+} 
+@for $i from 1 through length($colours) {
+  .rgb:nth-of-type(#{$i}) {
+    background-color: nth($colours, $i);
+  }
+}
+@each $colour in $colours {
+	.rgb:nth-of-type(#{index($colours, $colour)}) {
+	 	background-color: $colour;
+	}
+}
+
+
+// Compass features
+/* Set font-weight to h1, h2, h3 */
+#{headings(1, 3)} {
+	font-weight: bold;
+}
+/* Set for all headings */
+#{headings()} {
+	text-transform: uppercase;	
+}
+// -o-, -ms- (and -khtml-) are omitted => specifically specifying not to output lines for Opera and Internet Explorer
+@mixin box-sizing($bs) {
+  $bs: unquote($bs);
+  @include experimental(box-sizing, $bs, -moz, -webkit, not -o, not -ms, not -khtml, official);
+}
+// @include box-sizing(border-box);

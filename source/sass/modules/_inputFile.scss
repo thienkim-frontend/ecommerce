@@ -1,0 +1,24 @@
+input[type="file"] + label{
+    cursor: pointer;
+    color: #fff;
+    background-color: #d3394c;
+    padding: 15px;
+    display: inline-block;
+}
+/* hiding the input visually but keeping it visible for the browser */
+input[type="file"]{
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+/* navigate on your website using just a keyboard */
+input[type="file"]:focus + label,
+input[type="file"] + label:hover {
+    background-color: red;
+    outline: 1px dotted #000;
+outline: -webkit-focus-ring-color auto 5px;
+}

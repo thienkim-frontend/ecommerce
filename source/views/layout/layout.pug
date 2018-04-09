@@ -1,0 +1,61 @@
+include ../mixin/common
+//-variable
+block var
+- var title = (typeof(title) === 'undefined' || title == "") ? "" : title;
+- var scriptpage;
+- var subPage = (typeof(subPage) === 'undefined' || subPage == "") ? "" : subPage;
+
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name="robots", content="index, follow")
+    meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
+    meta(name='apple-mobile-web-app-capable', content='yes')
+    meta(name='format-detection', content='telephone=no')
+    meta(name='description', content='')
+    meta(name='keywords', content='')
+    meta(name='author', content='')
+    link(rel='icon', href='./images/favicon.ico' type='image/x-icon')    
+    title Title | #{title}
+    // link(rel="canonical", href="https://kriesi.at/themes/enfold-medical/")
+    link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Lora:400,400i")
+    link(href='css/plugins.min.css', rel='stylesheet', media='all')
+    link(href='css/style.css', rel='stylesheet', media='all')
+    <!--[if lt IE 9]>
+    script(src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js")
+    script(src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js")
+    <![endif]-->
+    // script(type="text/javascript", async="", src="https://www.google-analytics.com/analytics.js")
+
+  body
+    #loading-wrapper
+      .sk-circle
+        .sk-circle1.sk-child  
+        .sk-circle2.sk-child  
+        .sk-circle3.sk-child  
+        .sk-circle4.sk-child  
+        .sk-circle5.sk-child  
+        .sk-circle6.sk-child  
+        .sk-circle7.sk-child  
+        .sk-circle8.sk-child  
+        .sk-circle9.sk-child  
+        .sk-circle10.sk-child  
+        .sk-circle11.sk-child  
+        .sk-circle12.sk-child
+
+    //- include header
+    include ../includes/header
+
+    .main-wrapper(class=subPage)
+        block content
+
+    //- include footer
+    include ../includes/footer
+
+   
+            
+    //- script(src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCTt3yRgnZFOFWHKPqBR2PhnhQDBC1vhTs")    
+    script(type="text/javascript", src='js/plugins.min.js')
+    script(type="text/javascript", src='js/main.js')

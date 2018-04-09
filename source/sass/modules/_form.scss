@@ -1,0 +1,55 @@
+// scrollbar
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+    &:vertical { width: 12px; }
+    &:horizontal{ height: 12px; }
+    &-thumb {
+        background-color: rgba(0, 0, 0, .5);
+        border-radius: 10px;
+        border: 2px solid #ffffff;
+    }
+    &-track {
+        border-radius: 10px;  
+        background-color: #ffffff; 
+    }
+}
+
+::-webkit-input-placeholder, :-moz-placeholder, :-ms-input-placeholder, ::-moz-placeholder {
+    color: #eee;
+}
+
+.select-custom{
+    position: relative;
+    display: inline-block;
+	select{
+		text-transform: uppercase;
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		appearance:none; 
+		border-radius: 0px;
+		background: transparent;
+		z-index: 99;
+		padding: 4px 8px 0;
+		font-size: 12px;
+		font-weight: 500;
+	}
+
+	&:after{
+		content: "";
+        top: 11px;
+        right: 8px;
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+        border: solid transparent;
+        border-color: rgba(136,183,213,0);
+        border-top-color: #000000;
+        border-width: 5px;
+	}
+	select option:checked,
+	select option:hover {
+		color: $white;
+	     background-color: $black;
+	}
+}

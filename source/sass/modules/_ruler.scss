@@ -1,0 +1,29 @@
+#wrapper {
+    position:relative;
+    width:800px;
+    height:600px;
+}
+#ruler-horizontal {
+    position:absolute;
+    top: 0px;
+    left: 0;
+    right: 20px;
+    height: 20px;
+    background-color: #EBEBEB;
+}
+#ruler-vertical {
+    background-color: #EBEBEB;
+    position:absolute;
+    top: 20px;
+    right: 0;
+    width: 20px;
+}
+#viewport{ 
+    background: #ddd;
+    height: 600px;
+    position: absolute;
+    top: 20px;
+    left: 0;
+    right: 20px;
+    width: 100%;
+}

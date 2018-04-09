@@ -1,0 +1,235 @@
+// Single-line comment won't appear in the CSS output
+// Mixin definitions can also include other mixins
+/* Placeholder selectors(%) will not show up in the generated CSS, 
+only the selectors that extend them will be included in the output.
+One limitation with @extend: it doesn't work between rules in different @media blocks. */
+#placeholder{
+	@media screen{
+		%btn{
+			min-width: 100px;
+			padding: 1em;
+		}
+		.button{
+			&--twitter{
+				@extend %btn;
+				background: #eee;
+			}
+			&--facebook{
+				@extend %btn;
+				background: #ccc;
+				$width: 5px !global;
+			}
+		}
+	}
+}
+#nestled{
+	@media screen{
+		.sidebar{
+			@media (orientation: landscape){
+				width: 500px;
+			}
+		}
+	}
+
+	.message {
+	  border: 1px solid #ccc;
+	  padding: 10px;
+	  color: #333;
+	}
+
+	.success {
+	  @extend .message;
+	  border-color: green;
+	  width: 300px / 960px * 100%;
+	}
+}
+
+// can use interpolation with @extends directive
+%updated-status {
+    margin-top: 20px;
+    background: #F00;
+}
+.selected-status {
+    font-weight: bold;
+}
+$flag: "status";
+.navigation {
+    @extend %updated-#{$flag};
+    @extend .selected-#{$flag};
+}
+
+$list: a, b, c, d, e, f;
+$first: nth($list, 1); // a
+$last: nth($list, length($list));   // f
+$prepend: join('a', $list);
+
+
+$people: (
+  "Hellen": (age: "34", sex: "female"),
+  "Patrick": (age: "23", sex: "male")
+);
+@each $person-name, $person-details in $people {
+  $age: map-get($person-details, 'age');
+  $sex: map-get($person-details, 'sex');
+  $keys: map-keys($person-details);
+
+  .#{$person-name} {
+    &:before {
+      content:"#{$person-name}  #{nth($keys, 1)} : #{$age} ";
+    }
+  }
+
+}
+
+// if the variable has already been assigned to, it won’t be re-assigned, 
+// but if it doesn’t have a value yet, it will be given one.
+#variable{
+	$content: "First content";
+	$content: "Second content?" !default;
+	#main {
+		@debug "Output is #{content}";
+		content: $content;
+	}
+}
+
+#applyMixin{
+	a:hover{
+		text-decoration: underline;
+	}
+	.hoverlink{
+		@extend a:hover;
+	}	
+}
+
+#condition{
+	$break-sm: 320px;
+	$break-lg: 1024px;
+	@mixin respond-to($media){
+		@if $media == handhelds{
+			@media only screen and (max-width: $break-sm){ @content;}
+		}
+		@else if $media == medium-screens{
+			@media only screen and (min-width:$break-sm + 1) and (max-width:$break-lg - 1){ @content; }
+		}
+		@else if $media == wide-screens{
+			@media only screen and (min-width:$break-lg){ @content; }
+		}
+	}
+	.profile{
+		float: left;
+		@include respond-to(handhelds){ width:100%; }
+		@include respond-to(medium-screens){ width: 125px; }
+		@include respond-to(wide-screens){ float:none; }
+	}
+}
+
+#loop{
+	@mixin mesg($selector){
+		#{$selector}:before{
+			content: "hi";
+			.firefox &{
+				font-weight: bold;
+			}
+		}
+	}
+
+	// starts at <start> and loops "through" each iteration and ends at <end>
+	@for $i from 1 through 3 {
+	  .item-#{$i} { width: 2em * $i; }
+	}
+	//starts at <start> and loops through each iteration "to" <end> and stops
+	@for $i from 1 to 3{
+		.item-#{$i} { @include mesg(".header");}
+	}
+	@each $animal in puma, sea-slug, egret, salamander {
+	  .#{$animal}-icon {
+	    background-image: url('/images/#{$animal}.png');
+	  }
+	}
+	@each $animal, $color, $cursor in (puma, black, default),(sea-slug, blue, pointer), (egret, white, move) {
+	  .#{$animal}-icon {
+	    background-image: url('/images/#{$animal}.png');
+	    border: 2px solid $color;
+	    cursor: $cursor;
+	  }
+	}
+	@each $header, $size in (h1: 2em, h2: 1.5em, h3: 1.2em) {
+	  #{$header} {
+	    font-size: $size;
+	  }
+	}
+	$list: adam john wynn;
+	@each $author in $list{
+		.photo-#{$author}{ background: url("avatars/#{$author}.png") no-repeat; }
+	}
+	$i: 6;
+	@while $i > 0 {
+	  .item-#{$i} { width: 2em * $i; }
+	  $i: $i - 2;
+	}	
+}
+
+
+$btn-name: blue, red, yellow;
+$btn-value: $blue, $red, $yellow;
+@each $name in $btn-name{
+  $i: index($btn-name, $name);
+  .btn-#{$name}{
+    background-color: nth($btn-value, $i);
+  }
+}
+
+
+//unknown number of arguments
+#unknownArg01{
+	@mixin box-shadow($shadows...) {
+		-moz-box-shadow: $shadows;
+		-webkit-box-shadow: $shadows;
+		box-shadow: $shadows;
+	}
+
+	.shadows {
+	  @include box-shadow(0px 4px 5px #666, 2px 6px 10px #999);
+	}
+}
+#unknownArg02{
+	@mixin colors($text, $background, $border) {
+	  color: $text;
+	  background-color: $background;
+	  border-color: $border;
+	}
+
+	$values: #ff0000, #00ff00, #0000ff;
+	.primary {
+	  @include colors($values...);
+	}
+
+	$value-map: (text: #00ff00, background: #0000ff, border: #ff0000);
+	.secondary {
+	  @include colors($value-map...);
+	}	
+}
+#issueMedia{
+	.profile-pic {
+	  @media screen and (max-width: 320px) {
+	    width: 100px;
+	    float: none;
+	  }
+	}
+
+	.biography {
+	  @media screen and (max-width: 320px) {
+	    font-size: 1.5em;
+	  }
+	}
+}
+/* It should be
+@media screen and (max-width: 320px) {
+  .profile-pic {
+    width: 100px;
+    float: none;
+  }
+  .biography {
+    font-size: 1.5em;
+  }
+} */
